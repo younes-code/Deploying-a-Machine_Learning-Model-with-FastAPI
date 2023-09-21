@@ -5,16 +5,17 @@ from sklearn.ensemble import RandomForestClassifier
 import joblib  # For saving the trained model
 import pandas as pd
 from data import process_data
-from model import train_model,inference,compute_model_metrics
+from model import train_model,inference,compute_model_metrics,compute_slices
 import os, pickle
 import logging
 
 # Add the necessary imports for the starter code.
 
 # Add code to load in the data.
-script_directory = os.path.dirname(os.path.abspath(__file__))
-datapath = os.path.join(script_directory, "../data/census.csv")
+# script_directory = os.path.dirname(os.path.abspath(__file__))
+# datapath = os.path.join(script_directory, "../data/census.csv")
 
+datapath="./data/census.csv"
 data = pd.read_csv(datapath)
 
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
@@ -44,17 +45,17 @@ X_test, y_test, _, _ = process_data(
 model = train_model(X_train, y_train)
 
 # Save the model as a .pkl file
-model_filename = "../model/trained_model.pkl"
+model_filename = "./model/trained_model.pkl"
 with open(model_filename, "wb") as model_file:
     pickle.dump(model, model_file)
 
 # Save label encoder as .pkl file
-encoder_filename = "../model/label_encoder.pkl"
+encoder_filename = "./model/label_encoder.pkl"
 with open(encoder_filename, "wb") as encoder_file:
     pickle.dump(encoder, encoder_file)
 
 # Save one-hot encoder as .pkl file
-lb_filename = "../model/one_hot_encoder.pkl"
+lb_filename = "./model/one_hot_encoder.pkl"
 with open(lb_filename, "wb") as lb_file:
     pickle.dump(lb, lb_file)
 
@@ -69,9 +70,15 @@ precision, recall, fbeta = compute_model_metrics(y_test, y_pred)
 
 # Log computed metrics
 
-logging.basicConfig(filename='training.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='ml/training.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logging.info("Precision: %f", precision)
 logging.info("Recall: %f", recall)
 logging.info("F-beta: %f", fbeta)
 
 logging.shutdown()
+
+# Compute and log performance on slices of categorical features.
+slices_df = compute_slices(test, feature=cat_features[0], y=y_test, preds=inference(model, X_test))
+# Log the performance DataFrame for slices.
+print("Performance on Slices for Feature:", cat_features[0])
+print(slices_df)
