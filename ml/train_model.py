@@ -5,8 +5,10 @@ from sklearn.ensemble import RandomForestClassifier
 import joblib  # For saving the trained model
 import pandas as pd
 from data import process_data
-from model import train_model,inference
+from model import train_model,inference,compute_model_metrics
 import os, pickle
+import logging
+
 # Add the necessary imports for the starter code.
 
 # Add code to load in the data.
@@ -41,7 +43,6 @@ X_test, y_test, _, _ = process_data(
 # Train and save a model.
 model = train_model(X_train, y_train)
 
-
 # Save the model as a .pkl file
 model_filename = "../model/trained_model.pkl"
 with open(model_filename, "wb") as model_file:
@@ -56,3 +57,21 @@ with open(encoder_filename, "wb") as encoder_file:
 lb_filename = "../model/one_hot_encoder.pkl"
 with open(lb_filename, "wb") as lb_file:
     pickle.dump(lb, lb_file)
+
+
+# Make predictions on the training data
+y_pred = inference(model,X_test)
+
+# Compute model metrics
+precision, recall, fbeta = compute_model_metrics(y_test, y_pred)
+
+
+
+# Log computed metrics
+
+logging.basicConfig(filename='training.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.info("Precision: %f", precision)
+logging.info("Recall: %f", recall)
+logging.info("F-beta: %f", fbeta)
+
+logging.shutdown()
