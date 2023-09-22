@@ -1,24 +1,17 @@
 # Script to train machine learning model.
 
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-import joblib  # For saving the trained model
 import pandas as pd
 from data import process_data
-from model import train_model,inference,compute_model_metrics,compute_slices
-import os, pickle
+from model import train_model, inference, compute_model_metrics, compute_slices
+import pickle
 import logging
 
-# Add the necessary imports for the starter code.
-
 # Add code to load in the data.
-# script_directory = os.path.dirname(os.path.abspath(__file__))
-# datapath = os.path.join(script_directory, "../data/census.csv")
 
-datapath="./data/census.csv"
+datapath = "./data/census.csv"
 data = pd.read_csv(datapath)
 
-# Optional enhancement, use K-fold cross validation instead of a train-test split.
 train, test = train_test_split(data, test_size=0.20)
 
 cat_features = [
@@ -37,7 +30,12 @@ X_train, y_train, encoder, lb = process_data(
 
 # Proces the test data with the process_data function.
 X_test, y_test, _, _ = process_data(
-    test, categorical_features=cat_features, label="salary", training=False, encoder=encoder,lb=lb
+    test,
+    categorical_features=cat_features,
+    label="salary",
+    training=False,
+    encoder=encoder,
+    lb=lb,
 )
 
 
@@ -61,16 +59,19 @@ with open(lb_filename, "wb") as lb_file:
 
 
 # Make predictions on the training data
-y_pred = inference(model,X_test)
+y_pred = inference(model, X_test)
 
 # Compute model metrics
 precision, recall, fbeta = compute_model_metrics(y_test, y_pred)
 
 
-
 # Log computed metrics
 
-logging.basicConfig(filename='ml/training.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    filename="ml/training.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
 logging.info("Precision: %f", precision)
 logging.info("Recall: %f", recall)
 logging.info("F-beta: %f", fbeta)
@@ -78,7 +79,9 @@ logging.info("F-beta: %f", fbeta)
 logging.shutdown()
 
 # Compute and log performance on slices of categorical features.
-slices_df = compute_slices(test, feature=cat_features[0], y=y_test, preds=inference(model, X_test))
+slices_df = compute_slices(
+    test, feature=cat_features[0], y=y_test, preds=inference(model, X_test)
+)
 # Log the performance DataFrame for slices.
 print("Performance on Slices for Feature:", cat_features[0])
 print(slices_df)

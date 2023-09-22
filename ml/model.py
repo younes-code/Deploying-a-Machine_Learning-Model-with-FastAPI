@@ -1,10 +1,10 @@
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report
 import pandas as pd
 
+
 # Optional: implement hyperparameter tuning.
-def train_model(X_train, y_train):
+def train_model(x_train, y_train):
     """
     Trains a machine learning model and returns it.
 
@@ -20,13 +20,14 @@ def train_model(X_train, y_train):
         Trained machine learning model.
     """
     model = RandomForestClassifier(n_estimators=100, random_state=42)
-    model.fit(X_train, y_train)
+    model.fit(x_train, y_train)
     return model
 
 
 def compute_model_metrics(y, preds):
     """
-    Validates the trained machine learning model using precision, recall, and F1.
+    Validates the trained machine learning model using precision,
+    recall, and F1.
 
     Inputs
     ------
@@ -46,8 +47,8 @@ def compute_model_metrics(y, preds):
     return precision, recall, fbeta
 
 
-def inference(model, X):
-    """ Run model inferences and return the predictions.
+def inference(model, x):
+    """Run model inferences and return the predictions.
 
     Inputs
     ------
@@ -60,9 +61,8 @@ def inference(model, X):
     preds : np.array
         Predictions from the model.
     """
-    preds = model.predict(X)
+    preds = model.predict(x)
     return preds
-
 
 
 def compute_slices(df, feature, y, preds):
@@ -94,7 +94,16 @@ def compute_slices(df, feature, y, preds):
     """
 
     slice_options = df[feature].unique().tolist()
-    perf_df = pd.DataFrame(columns=['feature', 'feature_value', 'n_samples', 'precision', 'recall', 'fbeta'])
+    perf_df = pd.DataFrame(
+        columns=[
+            "feature",
+            "feature_value",
+            "n_samples",
+            "precision",
+            "recall",
+            "fbeta",
+        ]
+    )
 
     for option in slice_options:
         slice_mask = df[feature] == option
@@ -105,14 +114,16 @@ def compute_slices(df, feature, y, preds):
         recall = recall_score(slice_y, slice_preds, zero_division=1)
         fbeta = fbeta_score(slice_y, slice_preds, beta=1, zero_division=1)
 
-        slice_perf_df = pd.DataFrame({
-            'feature': [feature],
-            'feature_value': [option],
-            'n_samples': [len(slice_y)],
-            'precision': [precision],
-            'recall': [recall],
-            'fbeta': [fbeta]
-        })
+        slice_perf_df = pd.DataFrame(
+            {
+                "feature": [feature],
+                "feature_value": [option],
+                "n_samples": [len(slice_y)],
+                "precision": [precision],
+                "recall": [recall],
+                "fbeta": [fbeta],
+            }
+        )
 
         perf_df = pd.concat([perf_df, slice_perf_df], ignore_index=True)
 
