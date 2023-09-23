@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 from main import app  # Import your FastAPI app instance
 
 client = TestClient(app)
+
 # a sample data for testing
 sample_data = {
     "age": 39,
