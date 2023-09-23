@@ -1,6 +1,10 @@
 # test_main.py
 from fastapi.testclient import TestClient
 from main import app  # Import your FastAPI app instance
+import warnings
+from sklearn.exceptions import InconsistentVersionWarning
+
+warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
 
 
 client = TestClient(app)
