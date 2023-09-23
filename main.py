@@ -12,23 +12,20 @@ app = FastAPI()
 
 
 class InputData(BaseModel):
-    age: int
-    workclass: str
-    fnlgt: int
-    education: str
-    education_num: int
-    marital_status: str
-    occupation: str
-    relationship: str
-    race: str
-    sex: str
-    capital_gain: int
-    capital_loss: int
-    hours_per_week: int
-    native_country: str
-
-
-# Define a root endpoint with a welcome message
+    age: int = 35
+    workclass: str = "Private"
+    fnlgt: int = 176756
+    education: str = "Bachelors"
+    education_num: int = 13
+    marital_status: str = "Married-civ-spouse"
+    occupation: str = "Exec-managerial"
+    relationship: str = "Husband"
+    race: str = "White"
+    sex: str = "Male"
+    capital_gain: int = 5000
+    capital_loss: int = 0
+    hours_per_week: int = 45
+    native_country: str = "United-States"
 
 
 @app.get("/")
