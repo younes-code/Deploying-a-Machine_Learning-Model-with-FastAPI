@@ -34,7 +34,7 @@ jobs:
 
 
       - name: Run pytest
-        run: pytest -W ignore::InconsistentVersionWarning
+        run: pytest --disable-warnings
 
       - name: Run flake8
         run: flake8
