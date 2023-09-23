@@ -3,7 +3,6 @@ from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
 
 
-# Optional: implement hyperparameter tuning.
 def train_model(x_train, y_train):
     """
     Trains a machine learning model and returns it.

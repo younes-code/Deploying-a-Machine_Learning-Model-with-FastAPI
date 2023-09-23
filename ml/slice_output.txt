@@ -1,0 +1,10 @@
+Performance on Slices for Feature: workclass
+     feature     feature_value n_samples  precision    recall     fbeta
+0  workclass           Private      4548   0.721769  0.629442  0.672451
+1  workclass      Self-emp-inc       224   0.790323  0.784000  0.787149
+2  workclass         Local-gov       397   0.783505  0.628099  0.697248
+3  workclass                 ?       382   0.620690  0.428571  0.507042
+4  workclass       Federal-gov       192   0.811594  0.700000  0.751678
+5  workclass         State-gov       259   0.780822  0.721519  0.750000
+6  workclass  Self-emp-not-inc       508   0.745763  0.539877  0.626335
+7  workclass      Never-worked         3   1.000000  1.000000  1.000000

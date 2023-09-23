@@ -6,8 +6,8 @@ from data import process_data
 from model import train_model, inference, compute_model_metrics, compute_slices
 import pickle
 import logging
+from contextlib import redirect_stdout
 
-# Add code to load in the data.
 
 datapath = "./data/census.csv"
 data = pd.read_csv(datapath)
@@ -85,3 +85,8 @@ slices_df = compute_slices(
 # Log the performance DataFrame for slices.
 print("Performance on Slices for Feature:", cat_features[0])
 print(slices_df)
+
+with open("./slice_output.txt", "w") as output_file:
+    with redirect_stdout(output_file):
+        print("Performance on Slices for Feature:", cat_features[0])
+        print(slices_df)

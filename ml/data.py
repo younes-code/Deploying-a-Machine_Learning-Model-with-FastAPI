@@ -7,7 +7,7 @@ def process_data(
     training=True, encoder=None, lb=None
 ):
     if categorical_features is None:
-        categorical_features = []  # Initialize as an empty list if None
+        categorical_features = []
     """Process the data used in the machine learning pipeline.
 
     Processes the data using one hot encoding

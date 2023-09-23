@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import pandas as pd
 from ml.data import process_data
 import pickle
+import uvicorn
 
 # instantiate a FastAPI app
 app = FastAPI()
@@ -39,8 +40,27 @@ async def welcome():
 # This allows sending of data (our InferenceSample) via POST to the API.
 
 
+# Define the POST endpoint for model inference
 @app.post("/inference/")
-async def ingest_data(inference: InputData):
+async def ingest_data(inference: InputData = None):
+    if inference is None:
+        inference = InputData(
+            age=35,
+            workclass="Private",
+            fnlgt=176756,
+            education="Bachelors",
+            education_num=13,
+            marital_status="Married-civ-spouse",
+            occupation="Exec-managerial",
+            relationship="Husband",
+            race="White",
+            sex="Male",
+            capital_gain=5000,
+            capital_loss=0,
+            hours_per_week=45,
+            native_country="United-States",
+        )
+
     data = {
         "age": inference.age,
         "workclass": inference.workclass,
@@ -103,3 +123,6 @@ async def ingest_data(inference: InputData):
     data["prediction"] = prediction
 
     return data
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
