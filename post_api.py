@@ -1,8 +1,8 @@
 import requests
 import json
 
-# URL of your FastAPI instance
-url = "http://localhost:8000/inference"  # Change this to the correct URL
+# URL of your Heroku-deployed FastAPI instance
+url = "https://income-predictor-app-75a78bb3abb1.herokuapp.com/inference"
 
 # Sample data for inference
 sample = {
@@ -25,7 +25,7 @@ sample = {
 # Convert sample data to JSON
 data = json.dumps(sample)
 
-# Send a POST request to the FastAPI endpoint
+# Send a POST request to the Heroku-deployed FastAPI endpoint
 response = requests.post(url, data=data)
 
 # Check if the request was successful
@@ -40,6 +40,3 @@ if response.status_code == 200:
 else:
     print("Failed to make a POST request. Status code:",
           response.status_code)
-
-# if __name__ == "__main__":
-#     pytest.main()
